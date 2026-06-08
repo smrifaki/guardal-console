@@ -123,7 +123,7 @@
   input[type=text],input[type=email],input[type=password],input[type=search],textarea{cursor:text}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 </head>
 <body>
   <a class="back-home" href="https://guardal.ai/">Back to site <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></a>
@@ -237,20 +237,23 @@
     var tokenClient = null;
 
     // ---- Google reCAPTCHA v2 on the email path ----
-    // reCAPTCHA v2 ("I am not a robot") site key for dashboard.guardal.ai, registered in the
-    // Google reCAPTCHA admin console. This is the PUBLIC site key (safe to ship). The matching
-    // secret key is for server-side verification only and must never appear in client code.
+    // reCAPTCHA Enterprise (v2 "I am not a robot" checkbox) site key for dashboard.guardal.ai.
+    // This is the PUBLIC site key (safe to ship). It renders the widget and produces a token.
+    // Full verification (the assessments API that returns a risk score) needs a server with a
+    // Google Cloud API key and must never run in client code; this static site does a token-presence
+    // gate only. To verify for real, route the token through a backend (e.g. a Cloudflare Worker).
     var RECAPTCHA_SITE_KEY = "6LdCVxQtAAAAAFkruNcSrR7Co9hzunlHXQr-nryZ";
     var captchaToken = '', captchaId = null;
     window.__gCaptchaOk     = function (t) { captchaToken = t || ''; clearNote(); };
     window.__gCaptchaExpire = function ()  { captchaToken = ''; };
     function renderCaptcha(){
       if (captchaId !== null) return;
-      if (!window.grecaptcha || !grecaptcha.render) { return setTimeout(renderCaptcha, 60); }
+      var ent = window.grecaptcha && window.grecaptcha.enterprise;
+      if (!ent || !ent.render) { return setTimeout(renderCaptcha, 60); }
       var slot = document.getElementById('recaptcha-slot');
       if (!slot) return;
-      captchaId = grecaptcha.render(slot, {
-        sitekey: RECAPTCHA_SITE_KEY, theme: 'light',
+      captchaId = ent.render(slot, {
+        sitekey: RECAPTCHA_SITE_KEY, theme: 'light', action: 'login',
         callback: window.__gCaptchaOk, 'expired-callback': window.__gCaptchaExpire
       });
     }
