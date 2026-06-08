@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in &middot; Guardal</title>
+<meta name="description" content="Sign in to the Guardal console. Independent red-team evidence for robot policies and VLAs.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://dashboard.guardal.ai/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05101F; --panel:#081627; --card:#0B1C32;
+    --ink:#F4F8FF; --muted:#90A1B8; --faint:#5C6B82;
+    --accent:#6AA0FF; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
+    --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:"Merriweather",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans); background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    min-height:100dvh;
+  }
+  a{color:inherit}
+  .wrap{display:grid; grid-template-columns:1fr; min-height:100dvh}
+  @media (min-width:900px){.wrap{grid-template-columns:1.05fr .95fr}}
+
+  /* ---- left brand panel ---- */
+  .brandpane{
+    position:relative; overflow:hidden; display:none;
+    background:
+      radial-gradient(120% 90% at 18% 12%, rgba(106,160,255,.10), transparent 55%),
+      linear-gradient(180deg, var(--panel), #060F1C);
+    border-right:1px solid var(--line-2);
+    padding:clamp(2rem,3.4vw,3.4rem);
+  }
+  @media (min-width:900px){.brandpane{display:flex; flex-direction:column}}
+  .brandpane .net{position:absolute; inset:0; width:100%; height:100%; opacity:.9; pointer-events:none}
+  .bp-logo{position:relative; display:inline-flex; align-items:center; gap:.6rem; font-size:1.18rem; font-weight:600; letter-spacing:-.01em}
+  .bp-logo img{width:26px; height:26px; filter:brightness(0) invert(1)}
+  .bp-mid{position:relative; margin-top:auto; max-width:30rem}
+  .bp-kicker{font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); margin-bottom:1.1rem}
+  .bp-kicker b{color:var(--muted); font-weight:600}
+  .bp-h{font-family:var(--serif); font-weight:900; font-size:clamp(2rem, 1.3rem + 2vw, 2.85rem); line-height:1.08; letter-spacing:-.015em}
+  .bp-h em{font-style:normal; color:var(--accent)}
+  .bp-sub{margin-top:1.1rem; color:var(--muted); font-size:1rem; line-height:1.6; max-width:32ch}
+  .pills{position:relative; display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.6rem}
+  .pill{font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.4rem .7rem; display:inline-flex; align-items:center; gap:.4rem}
+  .pill svg{width:11px; height:11px; opacity:.8}
+  .bp-stats{position:relative; display:flex; gap:clamp(1.4rem,3vw,2.6rem); margin-top:2.4rem; padding-top:1.6rem; border-top:1px solid var(--line-2)}
+  .stat .n{font-family:var(--serif); font-weight:700; font-size:1.35rem; letter-spacing:-.01em}
+  .stat .n em{font-style:normal; color:var(--accent)}
+  .stat .l{margin-top:.3rem; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); line-height:1.5}
+
+  /* ---- right auth pane ---- */
+  .authpane{display:flex; align-items:center; justify-content:center; padding:clamp(2rem,5vw,3.5rem)}
+  .card{width:100%; max-width:23rem; text-align:center}
+  .card-logo{display:inline-flex; align-items:center; gap:.55rem; font-size:1.12rem; font-weight:600; letter-spacing:-.01em; margin-bottom:1.9rem}
+  .card-logo img{width:24px; height:24px; filter:brightness(0) invert(1)}
+  .card h1{font-family:var(--serif); font-weight:700; font-size:1.6rem; letter-spacing:-.01em}
+  .card .eyebrow{font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:1.4rem 0 1rem}
+  .btn{width:100%; display:flex; align-items:center; justify-content:center; gap:.6rem; height:46px; border-radius:11px; font-family:var(--sans); font-size:.95rem; font-weight:600; cursor:pointer; border:1px solid transparent; transition:transform .12s ease, background .18s ease, border-color .18s ease}
+  .btn:active{transform:translateY(1px)}
+  .btn-google{background:#fff; color:#1A1A1A; border-color:#fff}
+  .btn-google:hover{background:#ECEFF4}
+  .btn-google svg{width:18px; height:18px}
+  .btn-email{background:transparent; color:var(--ink); border-color:var(--line); margin-top:.7rem}
+  .btn-email:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.03)}
+  .btn-primary{background:var(--accent); color:#04122B; border-color:var(--accent); margin-top:.7rem}
+  .btn-primary:hover{background:#7DAEFF}
+  .btn .arr{width:15px;height:15px}
+  .divider{display:flex; align-items:center; gap:.8rem; margin:1.4rem 0; color:var(--faint); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase}
+  .divider::before,.divider::after{content:""; flex:1; height:1px; background:var(--line-2)}
+  .email-form{display:none; margin-top:.7rem; text-align:left}
+  .email-form.open{display:block}
+  .email-form label{display:block; font-size:.74rem; letter-spacing:.04em; color:var(--muted); margin-bottom:.45rem}
+  .email-form input{width:100%; height:46px; border-radius:11px; border:1px solid var(--line); background:rgba(255,255,255,.04); color:var(--ink); padding:0 .9rem; font-family:var(--sans); font-size:.95rem; outline:none; transition:border-color .18s ease}
+  .email-form input::placeholder{color:var(--faint)}
+  .email-form input:focus{border-color:var(--accent)}
+  .foot-note{margin-top:1.5rem; font-size:.78rem; color:var(--faint); line-height:1.6}
+  .foot-note a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--line)}
+  .foot-note a:hover{color:var(--ink); border-color:rgba(255,255,255,.3)}
+  .beta{display:inline-flex; align-items:center; gap:.4rem; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-top:1.7rem}
+  .beta .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(106,160,255,.18)}
+  .back-home{position:absolute; top:clamp(1.2rem,3vw,2rem); right:clamp(1.2rem,3vw,2rem); font-size:.82rem; color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:.4rem; z-index:5}
+  .back-home:hover{color:var(--ink)}
+  .back-home svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+  <a class="back-home" href="https://guardal.ai/">Back to site <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></a>
+  <div class="wrap">
+
+    <!-- left: brand -->
+    <section class="brandpane">
+      <svg class="net" viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g stroke="rgba(255,255,255,.09)" stroke-width="1" fill="none">
+          <path d="M70 120 L210 70 M210 70 L330 180 M70 120 L150 250 M150 250 L330 180 M330 180 L470 130 M470 130 L520 280 M330 180 L300 360 M150 250 L300 360 M300 360 L470 410 M520 280 L470 410 M300 360 L210 520 M470 410 L500 580 M210 520 L360 620 M500 580 L360 620 M210 520 L90 600 M90 600 L360 620"/>
+        </g>
+        <g fill="rgba(255,255,255,.22)">
+          <circle cx="70" cy="120" r="3"/><circle cx="210" cy="70" r="3"/><circle cx="470" cy="130" r="3"/>
+          <circle cx="150" cy="250" r="3"/><circle cx="520" cy="280" r="3"/><circle cx="470" cy="410" r="3"/>
+          <circle cx="210" cy="520" r="3"/><circle cx="500" cy="580" r="3"/><circle cx="90" cy="600" r="3"/><circle cx="360" cy="620" r="3"/>
+        </g>
+        <circle cx="330" cy="180" r="6" fill="#6AA0FF"/>
+        <circle cx="330" cy="180" r="13" fill="none" stroke="#6AA0FF" stroke-width="1.4" opacity=".5"/>
+        <circle cx="300" cy="360" r="5.5" fill="#6AA0FF"/>
+        <circle cx="300" cy="360" r="12" fill="none" stroke="#6AA0FF" stroke-width="1.2" opacity=".4"/>
+      </svg>
+
+      <a class="bp-logo" href="https://guardal.ai/" aria-label="Guardal home">
+        <img src="/assets/logo.svg" alt="" width="26" height="26">Guardal
+      </a>
+
+      <div class="bp-mid">
+        <div class="bp-kicker"><b>Adversarial</b> &middot; <b>Predictive</b> &middot; <b>Independent</b></div>
+        <h2 class="bp-h">Evidence before it <em>fails</em> in the field</h2>
+        <p class="bp-sub">The agentic crash-test lab for physical AI. We red-team robot policies and VLAs, then hand you the failures while they are still cheap to fix.</p>
+        <div class="pills">
+          <span class="pill"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5l5.5 2.5v3.5c0 3.4-2.3 5.7-5.5 6.5C4.8 13.2 2.5 10.9 2.5 7.5V4z"/></svg>Vendor-neutral</span>
+          <span class="pill"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>Confidential by NDA</span>
+        </div>
+      </div>
+
+      <div class="bp-stats">
+        <div class="stat"><div class="n">3</div><div class="l">axes of attack<br>instructions &middot; scenes &middot; sensors</div></div>
+        <div class="stat"><div class="n">10<em>3</em>+</div><div class="l">adversarial probes<br>per evaluation run</div></div>
+        <div class="stat"><div class="n">open</div><div class="l">scoring protocol<br>seeds &middot; generators published</div></div>
+      </div>
+    </section>
+
+    <!-- right: auth -->
+    <section class="authpane">
+      <div class="card">
+        <span class="card-logo"><img src="/assets/logo.svg" alt="" width="24" height="24">Guardal</span>
+        <h1>Welcome back</h1>
+        <div class="eyebrow">Sign in to the console</div>
+
+        <button class="btn btn-google" id="g-btn" type="button">
+          <svg viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.29-1.72V4.95H.96A9 9 0 000 9c0 1.45.35 2.83.96 4.05l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 00.96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+          Continue with Google
+        </button>
+        <button class="btn btn-email" id="email-btn" type="button">Continue with email</button>
+
+        <form class="email-form" id="email-form" action="mailto:hello@guardal.ai" method="post" enctype="text/plain">
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+          <button class="btn btn-primary" type="submit">Continue <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></button>
+        </form>
+
+        <div class="divider">Secure &middot; Confidential</div>
+
+        <p class="foot-note">Trouble signing in? <a href="mailto:hello@guardal.ai?subject=Console%20access">Contact us</a></p>
+        <span class="beta"><span class="dot"></span>Private beta &middot; access provisioned per engagement</span>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+  (function(){
+    var emailBtn=document.getElementById('email-btn');
+    var gBtn=document.getElementById('g-btn');
+    var form=document.getElementById('email-form');
+    function openEmail(){ form.classList.add('open'); emailBtn.style.display='none'; document.getElementById('email').focus(); }
+    emailBtn.addEventListener('click', openEmail);
+    // SSO is enabled for provisioned accounts during private beta; route unknown
+    // sign-ins to the same access request so nothing dead-ends.
+    gBtn.addEventListener('click', function(){
+      window.location.href='mailto:hello@guardal.ai?subject=Console%20access%20(Google%20SSO)&body=Please%20provision%20console%20access%20for%20my%20account.';
+    });
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var v=encodeURIComponent(document.getElementById('email').value||'');
+      window.location.href='mailto:hello@guardal.ai?subject=Console%20access&body=Please%20provision%20console%20access%20for%20'+v;
+    });
+  })();
+  </script>
+</body>
+</html>
