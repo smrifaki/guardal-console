@@ -14,9 +14,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#05101F; --panel:#081627; --card:#0B1C32;
-    --ink:#F4F8FF; --muted:#90A1B8; --faint:#5C6B82;
-    --accent:#6AA0FF; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
+    --bg:#1A1A1C; --panel:#1A1A1C; --card:#202022;
+    --ink:#F6F5F2; --muted:#9A968C; --faint:#57534B;
+    --accent:#F5A623; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
     --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --serif:"Merriweather",Georgia,"Times New Roman",serif;
   }
@@ -35,8 +35,8 @@
   .brandpane{
     position:relative; overflow:hidden; display:none;
     background:
-      radial-gradient(120% 90% at 18% 12%, rgba(106,160,255,.10), transparent 55%),
-      linear-gradient(180deg, var(--panel), #060F1C);
+      radial-gradient(120% 90% at 18% 12%, rgba(245,166,35,.10), transparent 55%),
+      linear-gradient(180deg, var(--panel), #0E0E0F);
     border-right:1px solid var(--line-2);
     padding:clamp(2rem,3.4vw,3.4rem);
   }
@@ -68,12 +68,12 @@
   .btn{width:100%; display:flex; align-items:center; justify-content:center; gap:.6rem; height:46px; border-radius:11px; font-family:var(--sans); font-size:.95rem; font-weight:600; cursor:pointer; border:1px solid transparent; transition:transform .12s ease, background .18s ease, border-color .18s ease}
   .btn:active{transform:translateY(1px)}
   .btn-google{background:#fff; color:#1A1A1A; border-color:#fff}
-  .btn-google:hover{background:#ECEFF4}
+  .btn-google:hover{background:#EFEDE8}
   .btn-google svg{width:18px; height:18px}
   .btn-email{background:transparent; color:var(--ink); border-color:var(--line); margin-top:.7rem}
   .btn-email:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.03)}
-  .btn-primary{background:#05101F; color:#FFFFFF; border-color:#05101F; margin-top:.7rem}
-  .btn-primary:hover{background:#11233F; border-color:#11233F}
+  .btn-primary{background:#1A1A1C; color:#FFFFFF; border-color:#1A1A1C; margin-top:.7rem}
+  .btn-primary:hover{background:#232325; border-color:#232325}
   .btn .arr{width:15px;height:15px}
   .divider{display:flex; align-items:center; gap:.8rem; margin:1.4rem 0; color:var(--faint); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase}
   .divider::before,.divider::after{content:""; flex:1; height:1px; background:var(--line-2)}
@@ -88,29 +88,29 @@
   .foot-note a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--line)}
   .foot-note a:hover{color:var(--ink); border-color:rgba(255,255,255,.3)}
   .beta{display:inline-flex; align-items:center; gap:.4rem; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-top:1.7rem}
-  .beta .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(106,160,255,.18)}
+  .beta .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(245,166,35,.18)}
   .back-home{position:absolute; top:clamp(1.2rem,3vw,2rem); right:clamp(1.2rem,3vw,2rem); font-size:.82rem; color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:.4rem; z-index:5}
   .back-home:hover{color:var(--ink)}
   .back-home svg{width:14px;height:14px}
 
   /* --- right auth pane on white (left brand panel stays dark) --- */
   .authpane{background:#FFFFFF}
-  .card-logo{color:#031F45}
+  .card-logo{color:#1A1A1C}
   .card-logo img{filter:none}
-  .card h1{color:#031F45}
-  .card .eyebrow{color:#8A93A1}
+  .card h1{color:#1A1A1C}
+  .card .eyebrow{color:#888377}
   .btn-google{background:#FFFFFF;color:#1A1A1A;border-color:#DADCE0}
-  .btn-google:hover{background:#F6F8FB;border-color:#C7CBD1}
-  .btn-email{background:#FFFFFF;color:#031F45;border-color:rgba(3,31,69,.16)}
-  .btn-email:hover{background:#F6F8FB;border-color:rgba(3,31,69,.34)}
-  .email-form label{color:#5B6675}
-  .email-form input{background:#FFFFFF;border-color:rgba(3,31,69,.16);color:#031F45}
-  .email-form input::placeholder{color:#9AA3B0}
-  .foot-note{color:#8A93A1}
-  .foot-note a{color:#5B6675;border-color:rgba(3,31,69,.2)}
-  .foot-note a:hover{color:#031F45;border-color:rgba(3,31,69,.42)}
-  .back-home{color:#5B6675}
-  .back-home:hover{color:#031F45}
+  .btn-google:hover{background:#F6F5F2;border-color:#C6C2BA}
+  .btn-email{background:#FFFFFF;color:#1A1A1C;border-color:rgba(26,26,28,.16)}
+  .btn-email:hover{background:#F6F5F2;border-color:rgba(26,26,28,.34)}
+  .email-form label{color:#57534B}
+  .email-form input{background:#FFFFFF;border-color:rgba(26,26,28,.16);color:#1A1A1C}
+  .email-form input::placeholder{color:#9C988E}
+  .foot-note{color:#888377}
+  .foot-note a{color:#57534B;border-color:rgba(26,26,28,.2)}
+  .foot-note a:hover{color:#1A1A1C;border-color:rgba(26,26,28,.42)}
+  .back-home{color:#57534B}
+  .back-home:hover{color:#1A1A1C}
   /* no underline on the Guardal wordmarks / chrome links */
   .bp-logo,.card-logo,.back-home{text-decoration:none}
   /* bigger, prominent stat row */
@@ -118,8 +118,8 @@
   .stat .n{font-size:clamp(2.3rem, 1.6rem + 2vw, 3.2rem);font-weight:900;line-height:1}
   .stat .l{font-size:.72rem;margin-top:.45rem}
   @media (prefers-reduced-motion: reduce){.probe{display:none}}
-  html{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2219%22%20height%3D%2226%22%20viewBox%3D%220.74%200.60%2021.59%2029.16%22%3E%3Cpath%20d%3D%22M2.2%202%20L2.2%2025.6%20L8.9%2019.7%20L12.7%2028.4%20L16.6%2026.6%20L12.8%2018.2%20L21%2018.2%20Z%22%0A%20%20%20%20%20%20%20%20fill%3D%22%2305101F%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") 1 1, url(https://guardal.ai/assets/cur-arrow-v4.png) 0 0, auto}
-  a,button,[role=button],summary,label[for],select,.btn,.doc-btn,.hub-card,.nav-label,.copy,.btn-google,.btn-email,.btn-primary,.back-home,input[type=submit],input[type=button]{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2227%22%20viewBox%3D%221.89%200.24%2023.44%2030.94%22%3E%3Cg%20stroke%3D%22%23fff%22%20stroke-width%3D%222.6%22%20stroke-linejoin%3D%22round%22%20fill%3D%22%23fff%22%3E%3Crect%20x%3D%229.4%22%20y%3D%222%22%20width%3D%224.4%22%20height%3D%2215%22%20rx%3D%221.2%22%2F%3E%3Crect%20x%3D%2213.9%22%20y%3D%2210.5%22%20width%3D%223.7%22%20height%3D%227.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2217.2%22%20y%3D%2211.5%22%20width%3D%223.7%22%20height%3D%226.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2220.3%22%20y%3D%2213%22%20width%3D%223.4%22%20height%3D%225.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%223.6%22%20y%3D%2215.5%22%20width%3D%225%22%20height%3D%225%22%20rx%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M7%2015%20H21%20L23.6%2018%20V24%20L20%2029.5%20H10.5%20L6.4%2024%20V18%20Z%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%2305101F%22%3E%3Crect%20x%3D%229.4%22%20y%3D%222%22%20width%3D%224.4%22%20height%3D%2215%22%20rx%3D%221.2%22%2F%3E%3Crect%20x%3D%2213.9%22%20y%3D%2210.5%22%20width%3D%223.7%22%20height%3D%227.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2217.2%22%20y%3D%2211.5%22%20width%3D%223.7%22%20height%3D%226.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2220.3%22%20y%3D%2213%22%20width%3D%223.4%22%20height%3D%225.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%223.6%22%20y%3D%2215.5%22%20width%3D%225%22%20height%3D%225%22%20rx%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M7%2015%20H21%20L23.6%2018%20V24%20L20%2029.5%20H10.5%20L6.4%2024%20V18%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 8 2, url(https://guardal.ai/assets/cur-hand-v4.png) 8 0, pointer}
+  html{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2219%22%20height%3D%2226%22%20viewBox%3D%220.74%200.60%2021.59%2029.16%22%3E%3Cpath%20d%3D%22M2.2%202%20L2.2%2025.6%20L8.9%2019.7%20L12.7%2028.4%20L16.6%2026.6%20L12.8%2018.2%20L21%2018.2%20Z%22%0A%20%20%20%20%20%20%20%20fill%3D%22%231A1A1C%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") 1 1, url(https://guardal.ai/assets/cur-arrow-v4.png) 0 0, auto}
+  a,button,[role=button],summary,label[for],select,.btn,.doc-btn,.hub-card,.nav-label,.copy,.btn-google,.btn-email,.btn-primary,.back-home,input[type=submit],input[type=button]{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2227%22%20viewBox%3D%221.89%200.24%2023.44%2030.94%22%3E%3Cg%20stroke%3D%22%23fff%22%20stroke-width%3D%222.6%22%20stroke-linejoin%3D%22round%22%20fill%3D%22%23fff%22%3E%3Crect%20x%3D%229.4%22%20y%3D%222%22%20width%3D%224.4%22%20height%3D%2215%22%20rx%3D%221.2%22%2F%3E%3Crect%20x%3D%2213.9%22%20y%3D%2210.5%22%20width%3D%223.7%22%20height%3D%227.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2217.2%22%20y%3D%2211.5%22%20width%3D%223.7%22%20height%3D%226.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2220.3%22%20y%3D%2213%22%20width%3D%223.4%22%20height%3D%225.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%223.6%22%20y%3D%2215.5%22%20width%3D%225%22%20height%3D%225%22%20rx%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M7%2015%20H21%20L23.6%2018%20V24%20L20%2029.5%20H10.5%20L6.4%2024%20V18%20Z%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%231A1A1C%22%3E%3Crect%20x%3D%229.4%22%20y%3D%222%22%20width%3D%224.4%22%20height%3D%2215%22%20rx%3D%221.2%22%2F%3E%3Crect%20x%3D%2213.9%22%20y%3D%2210.5%22%20width%3D%223.7%22%20height%3D%227.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2217.2%22%20y%3D%2211.5%22%20width%3D%223.7%22%20height%3D%226.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2220.3%22%20y%3D%2213%22%20width%3D%223.4%22%20height%3D%225.5%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%223.6%22%20y%3D%2215.5%22%20width%3D%225%22%20height%3D%225%22%20rx%3D%221.1%22%2F%3E%3Cpath%20d%3D%22M7%2015%20H21%20L23.6%2018%20V24%20L20%2029.5%20H10.5%20L6.4%2024%20V18%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 8 2, url(https://guardal.ai/assets/cur-hand-v4.png) 8 0, pointer}
   input[type=text],input[type=email],input[type=password],input[type=search],textarea{cursor:text}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -148,25 +148,25 @@
           <circle cx="360" cy="620" r="3"/>
         </g>
         <!-- nodes under pressure: pulsing rings -->
-        <circle cx="330" cy="180" r="6" fill="#6AA0FF"/>
-        <circle cx="330" cy="180" r="8" fill="none" stroke="#6AA0FF" stroke-width="1.4">
+        <circle cx="330" cy="180" r="6" fill="#F5A623"/>
+        <circle cx="330" cy="180" r="8" fill="none" stroke="#F5A623" stroke-width="1.4">
           <animate attributeName="r" values="8;22;8" dur="3.4s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values=".6;0;.6" dur="3.4s" repeatCount="indefinite"/>
         </circle>
-        <circle cx="300" cy="360" r="5.5" fill="#6AA0FF"/>
-        <circle cx="300" cy="360" r="8" fill="none" stroke="#6AA0FF" stroke-width="1.2">
+        <circle cx="300" cy="360" r="5.5" fill="#F5A623"/>
+        <circle cx="300" cy="360" r="8" fill="none" stroke="#F5A623" stroke-width="1.2">
           <animate attributeName="r" values="7;19;7" dur="4s" begin="1.1s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values=".5;0;.5" dur="4s" begin="1.1s" repeatCount="indefinite"/>
         </circle>
         <!-- adversarial probes hunting the policy graph -->
         <g class="probe">
-          <circle r="9" fill="rgba(106,160,255,.16)"/>
-          <circle r="3.4" fill="#9CC2FF"/>
+          <circle r="9" fill="rgba(245,166,35,.16)"/>
+          <circle r="3.4" fill="#F5A623"/>
           <animateMotion dur="9s" repeatCount="indefinite" path="M70,120 L330,180 L300,360 L470,410 L500,580 L360,620 L210,520 L150,250 Z"/>
         </g>
         <g class="probe">
-          <circle r="8" fill="rgba(106,160,255,.14)"/>
-          <circle r="3" fill="#7FB0FF"/>
+          <circle r="8" fill="rgba(245,166,35,.14)"/>
+          <circle r="3" fill="#F5A623"/>
           <animateMotion dur="12s" begin="-3.5s" repeatCount="indefinite" path="M210,70 L470,130 L520,280 L470,410 L360,620 L90,600 L150,250 Z"/>
         </g>
       </svg>
