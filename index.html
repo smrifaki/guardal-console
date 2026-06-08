@@ -237,10 +237,10 @@
     var tokenClient = null;
 
     // ---- Google reCAPTCHA v2 on the email path ----
-    // Register dashboard.guardal.ai at https://www.google.com/recaptcha/admin (reCAPTCHA v2, "I am not a robot")
-    // and paste your SITE key below to replace Google's public TEST key (the test key shows a small
-    // "for testing purposes only" notice and always passes; the production key removes it and gates real bots).
-    var RECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+    // reCAPTCHA v2 ("I am not a robot") site key for dashboard.guardal.ai, registered in the
+    // Google reCAPTCHA admin console. This is the PUBLIC site key (safe to ship). The matching
+    // secret key is for server-side verification only and must never appear in client code.
+    var RECAPTCHA_SITE_KEY = "6LdCVxQtAAAAAFkruNcSrR7Co9hzunlHXQr-nryZ";
     var captchaToken = '', captchaId = null;
     window.__gCaptchaOk     = function (t) { captchaToken = t || ''; clearNote(); };
     window.__gCaptchaExpire = function ()  { captchaToken = ''; };
