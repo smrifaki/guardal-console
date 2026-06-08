@@ -56,7 +56,7 @@
   .bp-stats{position:relative; display:flex; gap:clamp(1.4rem,3vw,2.6rem); margin-top:2.4rem; padding-top:1.6rem; border-top:1px solid var(--line-2)}
   .stat .n{font-family:var(--serif); font-weight:700; font-size:1.35rem; letter-spacing:-.01em}
   .stat .n em{font-style:normal; color:var(--accent)}
-  .stat .l{margin-top:.3rem; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); line-height:1.5}
+  .stat .l{margin-top:.3rem; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); line-height:1.5}
 
   /* ---- right auth pane ---- */
   .authpane{display:flex; align-items:center; justify-content:center; padding:clamp(2rem,5vw,3.5rem)}
@@ -72,8 +72,8 @@
   .btn-google svg{width:18px; height:18px}
   .btn-email{background:transparent; color:var(--ink); border-color:var(--line); margin-top:.7rem}
   .btn-email:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.03)}
-  .btn-primary{background:var(--accent); color:#04122B; border-color:var(--accent); margin-top:.7rem}
-  .btn-primary:hover{background:#7DAEFF}
+  .btn-primary{background:#05101F; color:#FFFFFF; border-color:#05101F; margin-top:.7rem}
+  .btn-primary:hover{background:#11233F; border-color:#11233F}
   .btn .arr{width:15px;height:15px}
   .divider{display:flex; align-items:center; gap:.8rem; margin:1.4rem 0; color:var(--faint); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase}
   .divider::before,.divider::after{content:""; flex:1; height:1px; background:var(--line-2)}
@@ -199,7 +199,7 @@
         </button>
         <button class="btn btn-email" id="email-btn" type="button">Continue with email</button>
 
-        <form class="email-form" id="email-form" action="mailto:hello@guardal.ai" method="post" enctype="text/plain">
+        <form class="email-form" id="email-form">
           <label for="email">Work email</label>
           <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
           <button class="btn btn-primary" type="submit">Continue <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></button>
