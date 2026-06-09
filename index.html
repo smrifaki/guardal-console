@@ -14,8 +14,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1A1A1C; --panel:#1A1A1C; --card:#202022;
-    --ink:#F6F5F2; --muted:#9A968C; --faint:#57534B;
+    --bg:#1B1B1B; --panel:#1B1B1B; --card:#212121;
+    --ink:#F4F4F4; --muted:#949494; --faint:#525252;
     --accent:#4C7BF7; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
     --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --serif:"Merriweather",Georgia,"Times New Roman",serif;
@@ -36,7 +36,7 @@
     position:relative; overflow:hidden; display:none;
     background:
       radial-gradient(120% 90% at 18% 12%, rgba(76,123,247,.10), transparent 55%),
-      linear-gradient(180deg, var(--panel), #0E0E0F);
+      linear-gradient(180deg, var(--panel), #0E0E0E);
     border-right:1px solid var(--line-2);
     padding:clamp(2rem,3.4vw,3.4rem);
   }
@@ -68,7 +68,7 @@
   .btn{width:100%; display:flex; align-items:center; justify-content:center; gap:.6rem; height:46px; border-radius:11px; font-family:var(--sans); font-size:.95rem; font-weight:600; cursor:pointer; border:1px solid transparent; transition:transform .12s ease, background .18s ease, border-color .18s ease}
   .btn:active{transform:translateY(1px)}
   .btn-google{background:#fff; color:#1A1A1A; border-color:#fff}
-  .btn-google:hover{background:#EFEDE8}
+  .btn-google:hover{background:#ECECEC}
   .btn-google svg{width:18px; height:18px}
   .btn-email{background:transparent; color:var(--ink); border-color:var(--line); margin-top:.7rem}
   .btn-email:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.03)}
@@ -95,22 +95,22 @@
 
   /* --- right auth pane on white (left brand panel stays dark) --- */
   .authpane{background:#FFFFFF}
-  .card-logo{color:#1A1A1C}
+  .card-logo{color:#1B1B1B}
   .card-logo img{filter:none}
-  .card h1{color:#1A1A1C}
-  .card .eyebrow{color:#888377}
-  .btn-google{background:#FFFFFF;color:#1A1A1A;border-color:#DADCE0}
-  .btn-google:hover{background:#F6F5F2;border-color:#C6C2BA}
-  .btn-email{background:#FFFFFF;color:#1A1A1C;border-color:rgba(26,26,28,.16)}
-  .btn-email:hover{background:#F6F5F2;border-color:rgba(26,26,28,.34)}
-  .email-form label{color:#57534B}
-  .email-form input{background:#FFFFFF;border-color:rgba(26,26,28,.16);color:#1A1A1C}
-  .email-form input::placeholder{color:#9C988E}
-  .foot-note{color:#888377}
-  .foot-note a{color:#57534B;border-color:rgba(26,26,28,.2)}
-  .foot-note a:hover{color:#1A1A1C;border-color:rgba(26,26,28,.42)}
-  .back-home{color:#57534B}
-  .back-home:hover{color:#1A1A1C}
+  .card h1{color:#1B1B1B}
+  .card .eyebrow{color:#818181}
+  .btn-google{background:#FFFFFF;color:#1A1A1A;border-color:#DDDDDD}
+  .btn-google:hover{background:#F4F4F4;border-color:#C1C1C1}
+  .btn-email{background:#FFFFFF;color:#1B1B1B;border-color:rgba(27,27,27,.16)}
+  .btn-email:hover{background:#F4F4F4;border-color:rgba(27,27,27,.34)}
+  .email-form label{color:#525252}
+  .email-form input{background:#FFFFFF;border-color:rgba(27,27,27,.16);color:#1B1B1B}
+  .email-form input::placeholder{color:#969696}
+  .foot-note{color:#818181}
+  .foot-note a{color:#525252;border-color:rgba(27,27,27,.2)}
+  .foot-note a:hover{color:#1B1B1B;border-color:rgba(27,27,27,.42)}
+  .back-home{color:#525252}
+  .back-home:hover{color:#1B1B1B}
   /* no underline on the Guardal wordmarks / chrome links */
   .bp-logo,.card-logo,.back-home{text-decoration:none}
   /* bigger, prominent stat row */
