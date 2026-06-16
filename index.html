@@ -25,15 +25,11 @@
   html,body{height:100%}
   body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow-x:hidden}
 
-  /* ---- fractal flowing blue motif (home-hero blue): drifts, rotates, morphs ---- */
-  body::before,body::after{content:"";position:fixed;z-index:0;pointer-events:none;
-    width:clamp(360px,54vw,860px);aspect-ratio:1;filter:url(#gzFractal);will-change:transform;
-    background:radial-gradient(closest-side,rgba(95,132,202,.46),rgba(79,114,173,.30) 48%,rgba(120,150,210,.14) 68%,rgba(120,150,210,0) 82%)}
-  body::before{top:0;left:0;animation:gzFlowA 28s ease-in-out infinite}
-  body::after{bottom:0;right:0;animation:gzFlowB 34s ease-in-out infinite}
-  @keyframes gzFlowA{0%{transform:translate(-36%,-34%) rotate(0deg)}25%{transform:translate(-24%,-28%) rotate(10deg)}50%{transform:translate(-34%,-40%) rotate(-8deg)}75%{transform:translate(-42%,-24%) rotate(6deg)}100%{transform:translate(-36%,-34%) rotate(0deg)}}
-  @keyframes gzFlowB{0%{transform:translate(36%,34%) rotate(0deg)}25%{transform:translate(26%,42%) rotate(-9deg)}50%{transform:translate(42%,28%) rotate(8deg)}75%{transform:translate(30%,40%) rotate(-6deg)}100%{transform:translate(36%,34%) rotate(0deg)}}
-  @media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}}
+  /* ---- homepage WebGL blobs: top-left + bottom-right ---- */
+  .gz-blob{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+  .gz-blob canvas{position:absolute;max-width:none;height:auto!important;pointer-events:none}
+  .gz-blob .blob-canvas-anchor{position:absolute;inset:0}
+  .gz-blob-tl{transform:scaleX(-1)}
 
   a{color:inherit;text-decoration:none}
   img{display:block}
@@ -98,14 +94,8 @@
 <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 </head>
 <body>
-  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none">
-    <filter id="gzFractal" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="11" stitchTiles="stitch" result="n">
-        <animate attributeName="baseFrequency" dur="30s" values="0.009 0.013;0.015 0.008;0.010 0.014;0.009 0.013" repeatCount="indefinite"/>
-      </feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="160" xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
-  </svg>
+  <div class="gz-blob gz-blob-tl"><div class="blob-canvas-anchor" data-align="top-right" data-blob-set="1"></div></div>
+  <div class="gz-blob gz-blob-br"><div class="blob-canvas-anchor" data-align="bottom-right" data-blob-set="2"></div></div>
   <header class="nav">
     <a class="nav-logo" href="https://guardal.ai/" aria-label="Guardal home"><img src="/assets/logo.svg" alt="" width="26" height="26">Guardal</a>
     <a class="nav-back" href="https://guardal.ai/">Back to site <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></a>
@@ -330,5 +320,215 @@
     })();
   })();
   </script>
+<style>
+  .blob-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blob-container canvas {
+    position: absolute;
+    max-width: none;
+    height: auto !important;
+    pointer-events: none;
+    z-index: 0;
+    transform: translateZ(0); /* Fixes iOS flicker */
+  }
+
+  .blob-canvas-anchor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+
+    script.onload = function () {
+      const vertexShader = `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
+
+      const fragmentShader = `precision highp float;uniform float u_time;uniform vec2 u_resolution;uniform float u_blobSet;varying vec2 vUv;const int BLOB_COUNT=10;struct Blob{vec2 position;vec2 size;vec3 color;float blur;float opacity;float rotation;};Blob getBlob(int index, float set) {if(set == 0.0) {if(index == 0) return Blob(vec2(-1.5,-.7),vec2(1.5,1.5),pow(vec3(.76,.88,1.),vec3(2.2)),.8,1.,0.);if(index == 1) return Blob(vec2(-.195,-1.),vec2(.65,.4),pow(vec3(.76,.88,1.),vec3(2.2)),.5,.9,.97);if(index == 2) return Blob(vec2(-.4,-.85),vec2(.2,.5),pow(vec3(.475,.702,.925),vec3(2.2)),.5,1.,-.17);if(index == 3) return Blob(vec2(-.85,-.85),vec2(.7,.5),pow(vec3(.475,.702,.925),vec3(2.2)),.5,.95,.5);if(index == 4) return Blob(vec2(-.85,-.75),vec2(.4,.12),pow(vec3(.784,.757,.863),vec3(2.2)),.3,.8,.18);if(index == 5) return Blob(vec2(-.575,-.9),vec2(.4,.2),pow(vec3(.42,.55,.78),vec3(2.2)),.5,1.,.65);if(index == 6) return Blob(vec2(-.7,-.77),vec2(.125,.065),pow(vec3(.55,.66,.85),vec3(2.2)),.2,.85,.1);if(index == 7) return Blob(vec2(-.6,-1.),vec2(.16,.25),pow(vec3(.30,.45,.72),vec3(2.2)),.3,1.,-.35);if(index == 8) return Blob(vec2(-1.,-1.),vec2(.45,.3),pow(vec3(.76,.88,1.),vec3(2.2)),.4,.8,0.);return Blob(vec2(-.4,-.8),vec2(.1,.2),pow(vec3(.475,.702,.925),vec3(2.2)),.3,1.,-.35);}else if(set == 1.0) {if(index == 0) return Blob(vec2(1.2,1.0),vec2(1.25,1.25),pow(vec3(.76,.88,1.),vec3(2.2)),.6,1.,0.);if(index == 1) return Blob(vec2(0.6,0.85),vec2(0.3,0.15),pow(vec3(.475,.702,.925),vec3(2.2)),.2,.9,1.0);if(index == 2) return Blob(vec2(0.9,0.6),vec2(0.35,0.2),pow(vec3(.475,.702,.925),vec3(2.2)),.1,.9,0.6);if(index == 3) return Blob(vec2(1.0,0.75),vec2(0.35,0.2),pow(vec3(.55,.66,.85),vec3(2.2)),.2,.9,0.4);if(index == 4) return Blob(vec2(0.68,0.95),vec2(0.45,0.25),pow(vec3(.42,.55,.78),vec3(2.2)),.3,.9,0.6);return Blob(vec2(0.65,0.95),vec2(0.3,0.15),pow(vec3(.30,.45,.72),vec3(2.2)),.3,.7,0.6);}else {if(index == 0) return Blob(vec2(1.2,-1.0),vec2(1.1,1.1),pow(vec3(.76,.88,1.),vec3(2.2)),.7,1.,0.);if(index == 1) return Blob(vec2(1.2,-0.5),vec2(0.6,0.6),pow(vec3(.475,.702,.925),vec3(2.2)),.4,1.,0.);if(index == 2) return Blob(vec2(0.9,-1.0),vec2(0.5,0.35),pow(vec3(.55,.66,.85),vec3(2.2)),.5,1.,-0.8);return Blob(vec2(0.95,-0.9),vec2(0.35,0.25),pow(vec3(.30,.45,.72),vec3(2.2)),.35,.8,-0.8);}}float noise(vec2 st){vec2 i=floor(st);vec2 f=fract(st);float a=fract(sin(dot(i,vec2(12.9898,78.233)))*43758.5453);float b=fract(sin(dot(i+vec2(1.,0.),vec2(12.9898,78.233)))*43758.5453);float c=fract(sin(dot(i+vec2(0.,1.),vec2(12.9898,78.233)))*43758.5453);float d=fract(sin(dot(i+vec2(1.,1.),vec2(12.9898,78.233)))*43758.5453);vec2 u=f*f*(3.-2.*f);return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}vec2 rotate2D(vec2 p,float a){float s=sin(a);float c=cos(a);return vec2(p.x*c-p.y*s,p.x*s+p.y*c);}float getBlobAlpha(vec2 uv,vec2 c,vec2 s,float b,float r){vec2 p=uv*2.-1.;p-=c;p=rotate2D(p,r);p=vec2(p.x/s.x,p.y/s.y);float d=length(p)+.15*noise(p*3.+u_time*.5);return smoothstep(1.,b,d);}void main(){vec2 uv=vUv;vec3 col=vec3(.984,.988,.992);if(u_blobSet==2.0)col=vec3(.086,.102,.133);float alpha=0.;int maxBlobs=10;if(u_blobSet==1.0)maxBlobs=6;else if(u_blobSet==2.0)maxBlobs=4;for(int i=0;i<maxBlobs;i++){Blob blob=getBlob(i,u_blobSet);float a=getBlobAlpha(uv,blob.position,blob.size,blob.blur,blob.rotation);a*=blob.opacity;col=mix(col,blob.color,a);alpha=clamp(alpha+a,0.,1.);}gl_FragColor=vec4(col,alpha);}`;
+
+      // Track all active blob instances so the visibility
+      // change listener can pause/resume all of them at once
+      const allInstances = [];
+
+      function initBlobCanvas(container, blobSet = 0.0, anchor) {
+        const canvas = document.createElement("canvas");
+        container.appendChild(canvas);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Cap pixel ratio to avoid massive textures on retina screens
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+        camera.position.z = 1;
+
+        const uniforms = {
+          u_time: { value: 0 },
+          u_resolution: { value: new THREE.Vector2() },
+          u_blobSet: { value: blobSet }
+        };
+
+        const geometry = new THREE.PlaneGeometry(2, 2);
+        const material = new THREE.ShaderMaterial({
+          vertexShader,
+          fragmentShader,
+          uniforms,
+          transparent: true
+        });
+
+        scene.add(new THREE.Mesh(geometry, material));
+        const clock = new THREE.Clock();
+
+        // --- State flags ---
+        // isInView: set by IntersectionObserver — true when the container
+        //           is at least 1px visible in the viewport
+        // isTabActive: set by the visibilitychange listener — false when
+        //              the user switches to another tab or minimises the window
+        // animFrameId: lets us cancel a pending requestAnimationFrame so we
+        //              don't queue up multiple loops after re-enabling
+        let isInView = false;
+        let isTabActive = !document.hidden;
+        let animFrameId = null;
+
+        // --- Resize ---
+        function resize() {
+          const viewportWidth = window.innerWidth;
+
+          let width = viewportWidth;
+          if (blobSet === 0.0) {
+            width = Math.max(viewportWidth, 1440);
+          } else if (blobSet === 1.0) {
+            width = Math.max(viewportWidth, 800);
+          }
+
+          const height = width / (16 / 9);
+
+          canvas.style.width = `${width}px`;
+          canvas.style.height = `${height}px`;
+
+          const align = anchor.getAttribute("data-align") || "center";
+          canvas.style.top = "";
+          canvas.style.left = "";
+          canvas.style.right = "";
+          canvas.style.bottom = "";
+
+          if (align === "bottom-left") {
+            canvas.style.left = "0";
+            canvas.style.bottom = "0";
+            canvas.style.transform = "translate(0%, 0%)";
+          } else if (align === "top-right") {
+            canvas.style.right = "0";
+            canvas.style.top = "0";
+            canvas.style.transform = "translate(0%, 0%)";
+          } else if (align === "bottom-right") {
+            canvas.style.right = "0";
+            canvas.style.bottom = "0";
+            canvas.style.transform = "translate(0%, 0%)";
+          } else {
+            canvas.style.top = "50%";
+            canvas.style.left = "50%";
+            canvas.style.transform = "translate(-50%, -50%)";
+          }
+
+          renderer.setSize(width, height, false);
+          uniforms.u_resolution.value.set(width, height);
+        }
+
+        window.addEventListener("resize", resize);
+        resize();
+
+        // --- Animation loop ---
+        // Only runs when both conditions are met:
+        //   1. The blob container is visible in the viewport (isInView)
+        //   2. The browser tab is active (isTabActive)
+        function animate() {
+          if (!isInView || !isTabActive) {
+            animFrameId = null; // Loop exits — will be restarted by resume()
+            return;
+          }
+          animFrameId = requestAnimationFrame(animate);
+          uniforms.u_time.value = clock.getElapsedTime();
+          renderer.render(scene, camera);
+        }
+
+        // --- Resume / pause helpers ---
+        // resume() is called by both the IntersectionObserver and the
+        // visibilitychange listener whenever conditions might allow rendering.
+        // It guards against starting a second loop if one is already running.
+        function resume() {
+          if (isInView && isTabActive && animFrameId === null) {
+            clock.start();
+            animate();
+          }
+        }
+
+        function pause() {
+          if (animFrameId !== null) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+          clock.stop();
+        }
+
+        // --- Intersection Observer ---
+        // Watches the *container* div (the thing you position in Webflow).
+        // threshold: 0 means the callback fires as soon as even 1px enters
+        // or leaves the viewport — good balance between responsiveness and
+        // not toggling too aggressively on large blobs.
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              isInView = entry.isIntersecting;
+              if (isInView) {
+                resume();
+              } else {
+                pause();
+              }
+            });
+          },
+          { threshold: 0 }
+        );
+
+        observer.observe(container);
+
+        // Expose tab-state setter so the shared visibilitychange
+        // listener below can reach into each instance
+        allInstances.push({
+          setTabActive(active) {
+            isTabActive = active;
+            if (active) {
+              resume();
+            } else {
+              pause();
+            }
+          }
+        });
+      }
+
+      // --- Tab visibility (shared, fires once for the whole page) ---
+      // Iterates every blob instance and tells it whether the tab is active.
+      document.addEventListener("visibilitychange", () => {
+        const active = !document.hidden;
+        allInstances.forEach((instance) => instance.setTabActive(active));
+      });
+
+      // --- Boot ---
+      document.querySelectorAll(".blob-canvas-anchor").forEach((anchor) => {
+        const container = anchor.parentElement;
+        const blobSet = parseFloat(anchor.getAttribute("data-blob-set")) || 0.0;
+        initBlobCanvas(container, blobSet, anchor);
+      });
+    };
+
+    document.head.appendChild(script);
+  });
+</script>
 </body>
 </html>
