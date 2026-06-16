@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#f4f6f9; --card:#ffffff; --ink:#0b1120;
@@ -19,7 +19,7 @@
     --accent:#4f72ad;
     --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --serif:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --mono:var(--sans);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
@@ -67,7 +67,7 @@
 
   .email-form{display:none;margin-top:.7rem;text-align:left}
   .email-form.open{display:block}
-  .email-form label{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+  .email-form label{display:block;font-family:var(--sans);font-size:.82rem;letter-spacing:normal;text-transform:none;color:var(--muted);margin-bottom:.5rem}
   .email-form input{width:100%;height:48px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:0 1rem;font-family:var(--sans);font-size:.95rem;outline:none;transition:border-color .18s ease}
   .email-form input::placeholder{color:var(--faint)}
   .email-form input:focus{border-color:var(--accent)}
