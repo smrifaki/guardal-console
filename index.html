@@ -25,14 +25,14 @@
   html,body{height:100%}
   body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow-x:hidden}
 
-  /* ---- flowing blue blobs: top-left + bottom-right, contract/expand endlessly ---- */
-  body::before,body::after{content:"";position:fixed;z-index:0;pointer-events:none;border-radius:50%;
-    width:clamp(300px,46vw,720px);aspect-ratio:1;filter:blur(8px);will-change:transform,opacity;
-    background:radial-gradient(closest-side,rgba(79,114,173,.55),rgba(40,70,132,.34) 52%,rgba(40,70,132,0) 78%)}
-  body::before{top:0;left:0;transform:translate(-34%,-34%);animation:gzBlobA 9s ease-in-out infinite}
-  body::after{bottom:0;right:0;transform:translate(34%,34%);animation:gzBlobB 11s ease-in-out infinite}
-  @keyframes gzBlobA{0%,100%{transform:translate(-34%,-34%) scale(.85);opacity:.65}50%{transform:translate(-34%,-34%) scale(1.22);opacity:1}}
-  @keyframes gzBlobB{0%,100%{transform:translate(34%,34%) scale(1);opacity:.7}50%{transform:translate(34%,34%) scale(1.3);opacity:1}}
+  /* ---- fractal flowing blue motif (home-hero blue): drifts, rotates, morphs ---- */
+  body::before,body::after{content:"";position:fixed;z-index:0;pointer-events:none;
+    width:clamp(360px,54vw,860px);aspect-ratio:1;filter:url(#gzFractal);will-change:transform;
+    background:radial-gradient(closest-side,rgba(95,132,202,.46),rgba(79,114,173,.30) 48%,rgba(120,150,210,.14) 68%,rgba(120,150,210,0) 82%)}
+  body::before{top:0;left:0;animation:gzFlowA 28s ease-in-out infinite}
+  body::after{bottom:0;right:0;animation:gzFlowB 34s ease-in-out infinite}
+  @keyframes gzFlowA{0%{transform:translate(-36%,-34%) rotate(0deg)}25%{transform:translate(-24%,-28%) rotate(10deg)}50%{transform:translate(-34%,-40%) rotate(-8deg)}75%{transform:translate(-42%,-24%) rotate(6deg)}100%{transform:translate(-36%,-34%) rotate(0deg)}}
+  @keyframes gzFlowB{0%{transform:translate(36%,34%) rotate(0deg)}25%{transform:translate(26%,42%) rotate(-9deg)}50%{transform:translate(42%,28%) rotate(8deg)}75%{transform:translate(30%,40%) rotate(-6deg)}100%{transform:translate(36%,34%) rotate(0deg)}}
   @media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}}
 
   a{color:inherit;text-decoration:none}
@@ -60,6 +60,9 @@
   .btn-google{background:#fff;color:#1a1a1a;border-color:#dadfe7}
   .btn-google:hover{border-color:#b9c1cf}
   .btn-google svg{width:18px;height:18px}
+  .btn-github{background:#fff;color:#1a1a1a;border-color:#dadfe7;margin-top:.7rem}
+  .btn-github:hover{border-color:#b9c1cf}
+  .btn-github svg{width:18px;height:18px}
   .btn-email{background:var(--ink);color:#fff;border-color:var(--ink);margin-top:.7rem}
   .btn-email:hover{opacity:.9}
   .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);margin-top:.7rem}
@@ -76,6 +79,9 @@
   .foot-note{margin-top:1.5rem;font-size:.82rem;color:var(--faint);line-height:1.6}
   .foot-note a{color:var(--muted);border-bottom:1px solid var(--line)}
   .foot-note a:hover{color:var(--ink);border-color:rgba(11,17,32,.4)}
+  .consent{margin-top:1.3rem;font-size:.78rem;color:var(--faint);line-height:1.6}
+  .consent a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .consent a:hover{color:var(--ink)}
 
   /* ---- footer (no logo) ---- */
   .site-foot{position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 2rem;justify-content:space-between;padding:1.4rem clamp(1.25rem,4vw,3rem);border-top:1px solid var(--line-2)}
@@ -92,6 +98,14 @@
 <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 </head>
 <body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none">
+    <filter id="gzFractal" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="11" stitchTiles="stitch" result="n">
+        <animate attributeName="baseFrequency" dur="30s" values="0.009 0.013;0.015 0.008;0.010 0.014;0.009 0.013" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="160" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
   <header class="nav">
     <a class="nav-logo" href="https://guardal.ai/" aria-label="Guardal home"><img src="/assets/logo.svg" alt="" width="26" height="26">Guardal</a>
     <a class="nav-back" href="https://guardal.ai/">Back to site <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></a>
@@ -107,6 +121,10 @@
         <svg viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 013.68 9c0-.6.1-1.18.29-1.72V4.95H.96A9 9 0 000 9c0 1.45.35 2.83.96 4.05l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 00.96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
         Continue with Google
       </button>
+      <button class="btn btn-github" id="gh-btn" type="button">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#1a1a1a" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Continue with GitHub
+      </button>
       <button class="btn btn-email" id="email-btn" type="button">Continue with email</button>
 
       <form class="email-form" id="email-form">
@@ -116,6 +134,7 @@
         <button class="btn btn-primary" type="submit">Continue <svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4"/></svg></button>
       </form>
 
+      <p class="consent">By continuing you agree to our <a href="https://guardal.ai/legal#terms">Terms of Service</a> and <a href="https://guardal.ai/legal#privacy">Privacy Policy</a>.</p>
       <p class="foot-note">Trouble signing in? <a href="mailto:support@guardal.ai?subject=Console%20access">Contact us</a></p>
     </div>
   </main>
@@ -133,6 +152,7 @@
   (function () {
     var emailBtn = document.getElementById('email-btn');
     var gBtn     = document.getElementById('g-btn');
+    var ghBtn    = document.getElementById('gh-btn');
     var form     = document.getElementById('email-form');
     var card     = document.querySelector('.card');
 
@@ -216,6 +236,20 @@
         gBtn.disabled = false;
         showNote('Could not open Google sign-in. Try again.');
       }
+    });
+
+    // ---- "Continue with GitHub": starts the GitHub OAuth web flow when configured.
+    //      GitHub has no pure client-side flow (the code->token exchange needs the client
+    //      secret), so completing sign-in requires a small backend at the redirect URI
+    //      (e.g. a Cloudflare Worker). Paste your OAuth App client ID below to enable it. ----
+    var GITHUB_CLIENT_ID = "YOUR_GITHUB_CLIENT_ID";
+    var ghConfigured = GITHUB_CLIENT_ID.indexOf('YOUR_GITHUB_CLIENT_ID') === -1;
+    if (ghBtn) ghBtn.addEventListener('click', function(){
+      clearNote();
+      if (!ghConfigured){ showNote('GitHub sign-in is not configured yet.'); return; }
+      var redirect = encodeURIComponent(window.location.origin + '/');
+      window.location.href = 'https://github.com/login/oauth/authorize?client_id=' + GITHUB_CLIENT_ID +
+        '&scope=' + encodeURIComponent('read:user user:email') + '&redirect_uri=' + redirect;
     });
 
     // Token model returns only an access_token -> fetch profile from official userinfo.
