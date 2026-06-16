@@ -92,6 +92,7 @@
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 </head>
 <body>
   <div class="gz-blob gz-blob-tl"><div class="blob-canvas-anchor" data-align="top-right" data-blob-set="1"></div></div>
@@ -232,14 +233,39 @@
     //      GitHub has no pure client-side flow (the code->token exchange needs the client
     //      secret), so completing sign-in requires a small backend at the redirect URI
     //      (e.g. a Cloudflare Worker). Paste your OAuth App client ID below to enable it. ----
-    var GITHUB_CLIENT_ID = "YOUR_GITHUB_CLIENT_ID";
-    var ghConfigured = GITHUB_CLIENT_ID.indexOf('YOUR_GITHUB_CLIENT_ID') === -1;
+    // ---- "Continue with GitHub": real OAuth via Supabase Auth. Supabase holds the
+    //      GitHub client secret server-side and completes the code->token exchange, which a
+    //      static page cannot do. Paste your Supabase project values below (both PUBLIC and
+    //      safe to ship; never put a client secret here). Setup: create a Supabase project,
+    //      register a GitHub OAuth App with callback https://<ref>.supabase.co/auth/v1/callback,
+    //      then enable Authentication > Providers > GitHub with that app's client id + secret. ----
+    var SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
+    var SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+    var sbConfigured = SUPABASE_URL.indexOf('YOUR_PROJECT_REF') === -1 && SUPABASE_ANON_KEY.indexOf('YOUR_SUPABASE_ANON_KEY') === -1;
+    var sb = (sbConfigured && window.supabase && window.supabase.createClient)
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    function onSignedIn(session){
+      var u = session && session.user || {};
+      var who = u.email || (u.user_metadata && (u.user_metadata.user_name || u.user_metadata.name)) || 'your account';
+      showNote('Signed in as ' + esc(who) + '.');
+    }
+    if (sb){
+      // Supabase auto-detects the session returned in the URL after the GitHub redirect.
+      sb.auth.getSession().then(function(r){ if (r && r.data && r.data.session) onSignedIn(r.data.session); });
+      sb.auth.onAuthStateChange(function(_e, session){ if (session) onSignedIn(session); });
+    }
     if (ghBtn) ghBtn.addEventListener('click', function(){
       clearNote();
-      if (!ghConfigured){ showNote('GitHub sign-in is not configured yet.'); return; }
-      var redirect = encodeURIComponent(window.location.origin + '/');
-      window.location.href = 'https://github.com/login/oauth/authorize?client_id=' + GITHUB_CLIENT_ID +
-        '&scope=' + encodeURIComponent('read:user user:email') + '&redirect_uri=' + redirect;
+      if (!sb){ showNote('GitHub sign-in is being set up.'); return; }
+      ghBtn.disabled = true;
+      sb.auth.signInWithOAuth({
+        provider: 'github',
+        options: { scopes: 'read:user user:email', redirectTo: window.location.origin + '/' }
+      }).then(function(r){
+        if (r && r.error){ ghBtn.disabled = false; showNote('Could not start GitHub sign-in. Try again.'); }
+      });
     });
 
     // Token model returns only an access_token -> fetch profile from official userinfo.
