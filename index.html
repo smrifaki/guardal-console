@@ -14,14 +14,15 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#1B1B1B; --panel:#1B1B1B; --card:#212121;
     --ink:#FFFFFF; --muted:#949494; --faint:#525252;
     --accent:#4C7BF7; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
     --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --serif:"Merriweather",Georgia,"Times New Roman",serif;
+    --serif:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
@@ -44,30 +45,39 @@
     padding:clamp(2rem,3.4vw,3.4rem);
   }
   @media (min-width:900px){.brandpane{display:flex; flex-direction:column}}
-  .brandpane .net{position:absolute; inset:0; width:100%; height:100%; opacity:.9; pointer-events:none}
+  .brandpane .net{position:absolute; inset:0; width:100%; height:100%; opacity:.9; pointer-events:none; z-index:1}
+  /* same flowing blob motif as the site (soft, contracts/expands, no slide) */
+  .brandpane::before{content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(46% 42% at 24% 20%, rgba(76,123,247,.30), transparent 60%),
+      radial-gradient(40% 40% at 86% 84%, rgba(76,123,247,.16), transparent 64%);
+    transform-origin:42% 38%; animation:gzFlow 22s ease-in-out infinite; will-change:transform,opacity}
+  .bp-logo,.bp-mid,.bp-stats{z-index:2}
+  @keyframes gzFlow{0%,100%{transform:scale(1); opacity:.7} 50%{transform:scale(1.16); opacity:1}}
+  @media (prefers-reduced-motion: reduce){.brandpane::before{animation:none}}
   .bp-logo{position:relative; display:inline-flex; align-items:center; gap:.6rem; font-size:1.18rem; font-weight:600; letter-spacing:-.01em}
   .bp-logo img{width:26px; height:26px; filter:brightness(0) invert(1)}
   .bp-mid{position:relative; margin-top:auto; max-width:30rem}
-  .bp-kicker{font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:var(--faint); margin-bottom:1.1rem}
+  .bp-kicker{font-family:var(--mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint); margin-bottom:1.1rem}
   .bp-kicker b{color:var(--muted); font-weight:600}
-  .bp-h{font-family:var(--serif); font-weight:900; font-size:clamp(2rem, 1.3rem + 2vw, 2.85rem); line-height:1.08; letter-spacing:-.015em}
+  .bp-h{font-family:var(--serif); font-weight:700; font-size:clamp(2rem, 1.3rem + 2vw, 2.85rem); line-height:1.08; letter-spacing:-.03em}
   .bp-h em{font-style:normal; color:var(--accent)}
   .bp-sub{margin-top:1.1rem; color:var(--muted); font-size:1rem; line-height:1.6; max-width:32ch}
   .pills{position:relative; display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.6rem}
-  .pill{font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.4rem .7rem; display:inline-flex; align-items:center; gap:.4rem}
+  .pill{font-family:var(--mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.4rem .7rem; display:inline-flex; align-items:center; gap:.4rem}
   .pill svg{width:11px; height:11px; opacity:.8}
   .bp-stats{position:relative; display:flex; gap:clamp(1.4rem,3vw,2.6rem); margin-top:2.4rem; padding-top:1.6rem; border-top:1px solid var(--line-2)}
   .stat .n{font-family:var(--serif); font-weight:700; font-size:1.35rem; letter-spacing:-.01em}
   .stat .n em{font-style:normal; color:var(--accent)}
-  .stat .l{margin-top:.3rem; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); line-height:1.5}
+  .stat .l{font-family:var(--mono); margin-top:.3rem; font-size:.64rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); line-height:1.5}
 
   /* ---- right auth pane ---- */
   .authpane{display:flex; align-items:center; justify-content:center; padding:clamp(2rem,5vw,3.5rem)}
   .card{width:100%; max-width:23rem; text-align:center}
   .card-logo{display:inline-flex; align-items:center; gap:.55rem; font-size:1.12rem; font-weight:600; letter-spacing:-.01em; margin-bottom:1.9rem}
   .card-logo img{width:24px; height:24px; filter:brightness(0) invert(1)}
-  .card h1{font-family:var(--serif); font-weight:700; font-size:1.6rem; letter-spacing:-.01em}
-  .card .eyebrow{font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); margin:1.4rem 0 1rem}
+  .card h1{font-family:var(--serif); font-weight:700; font-size:1.6rem; letter-spacing:-.03em}
+  .card .eyebrow{font-family:var(--mono); font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint); margin:1.4rem 0 1rem}
   .btn{width:100%; display:flex; align-items:center; justify-content:center; gap:.6rem; height:46px; border-radius:11px; font-family:var(--sans); font-size:.95rem; font-weight:600; cursor:pointer; border:1px solid transparent; transition:transform .12s ease, background .18s ease, border-color .18s ease}
   .btn:active{transform:translateY(1px)}
   .btn-google{background:#fff; color:#1A1A1A; border-color:#fff}
@@ -118,7 +128,7 @@
   .bp-logo,.card-logo,.back-home{text-decoration:none}
   /* bigger, prominent stat row */
   .bp-stats{gap:clamp(1.6rem,3.4vw,3.2rem);margin-top:2.6rem;padding-top:1.9rem}
-  .stat .n{font-size:clamp(2.3rem, 1.6rem + 2vw, 3.2rem);font-weight:900;line-height:1}
+  .stat .n{font-size:clamp(2.3rem, 1.6rem + 2vw, 3.2rem);font-weight:700;line-height:1;letter-spacing:-.03em}
   .stat .l{font-size:.72rem;margin-top:.45rem}
   @media (prefers-reduced-motion: reduce){.probe{display:none}}
   html{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2219%22%20height%3D%2226%22%20viewBox%3D%220.74%200.60%2021.59%2029.16%22%3E%3Cpath%20d%3D%22M2.2%202%20L2.2%2025.6%20L8.9%2019.7%20L12.7%2028.4%20L16.6%2026.6%20L12.8%2018.2%20L21%2018.2%20Z%22%0A%20%20%20%20%20%20%20%20fill%3D%22%231A1A1C%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") 1 1, url(https://guardal.ai/assets/cur-arrow-v4.png) 0 0, auto}
