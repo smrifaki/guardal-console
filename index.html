@@ -239,28 +239,32 @@
     //      safe to ship; never put a client secret here). Setup: create a Supabase project,
     //      register a GitHub OAuth App with callback https://<ref>.supabase.co/auth/v1/callback,
     //      then enable Authentication > Providers > GitHub with that app's client id + secret. ----
-    var SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
-    var SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-    var sbConfigured = SUPABASE_URL.indexOf('YOUR_PROJECT_REF') === -1 && SUPABASE_ANON_KEY.indexOf('YOUR_SUPABASE_ANON_KEY') === -1;
-    var sb = (sbConfigured && window.supabase && window.supabase.createClient)
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-      : null;
-
+    var SUPABASE_URL = "https://jojtttnqpdznydtrrmxv.supabase.co";
+    var SUPABASE_ANON_KEY = "sb_publishable_ltUJrbAok-LM-S0lZaZDVg_oxlU5Zzi";
+    var sbConfigured = /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SUPABASE_URL) && /^sb_publishable_|^eyJ/.test(SUPABASE_ANON_KEY);
     function onSignedIn(session){
       var u = session && session.user || {};
       var who = u.email || (u.user_metadata && (u.user_metadata.user_name || u.user_metadata.name)) || 'your account';
       showNote('Signed in as ' + esc(who) + '.');
     }
-    if (sb){
+    // Lazily create the client so load order with the deferred supabase-js script never matters.
+    var sb = null;
+    function getSb(){
+      if (sb) return sb;
+      if (!sbConfigured || !window.supabase || !window.supabase.createClient) return null;
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       // Supabase auto-detects the session returned in the URL after the GitHub redirect.
       sb.auth.getSession().then(function(r){ if (r && r.data && r.data.session) onSignedIn(r.data.session); });
       sb.auth.onAuthStateChange(function(_e, session){ if (session) onSignedIn(session); });
+      return sb;
     }
+    (function waitSb(n){ if (getSb() || n <= 0) return; setTimeout(function(){ waitSb(n - 1); }, 60); })(50);
     if (ghBtn) ghBtn.addEventListener('click', function(){
       clearNote();
-      if (!sb){ showNote('GitHub sign-in is being set up.'); return; }
+      var client = getSb();
+      if (!client){ showNote('GitHub sign-in is being set up.'); return; }
       ghBtn.disabled = true;
-      sb.auth.signInWithOAuth({
+      client.auth.signInWithOAuth({
         provider: 'github',
         options: { scopes: 'read:user user:email', redirectTo: window.location.origin + '/' }
       }).then(function(r){
