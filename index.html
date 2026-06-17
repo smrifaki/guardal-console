@@ -245,7 +245,7 @@
     function onSignedIn(session){
       var u = session && session.user || {};
       var who = u.email || (u.user_metadata && (u.user_metadata.user_name || u.user_metadata.name)) || 'your account';
-      showNote('Signed in as ' + esc(who) + '.');
+      showNote('Signed in as ' + esc(who));
     }
     // Lazily create the client so load order with the deferred supabase-js script never matters.
     var sb = null;
